@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>paste · {{.ID}}</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="container">
+  <header class="page-head paste-head">
+    <div>
+      <h1>Paste <span class="mono muted">{{.ID}}</span></h1>
+      <p class="muted small">
+        {{.Size}} bytes · created {{.CreatedAt}}
+        {{if .OneTime}}· <strong>one-time (consumed)</strong>{{end}}
+      </p>
+    </div>
+    <div class="paste-actions">
+      <a href="/raw/{{.ID}}" class="link-btn">Raw</a>
+      <a href="/" class="link-btn">← back</a>
+    </div>
+  </header>
+  <pre class="paste">{{.Content}}</pre>
+</main>
+</body>
+</html>

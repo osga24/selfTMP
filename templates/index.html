@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>selfTMP</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="container">
+  <header class="page-head">
+    <h1>selfTMP</h1>
+    <p class="muted">Personal temporary upload · paste · link shortener</p>
+  </header>
+
+  <label class="token-field">
+    <span>Admin token</span>
+    <input id="token" type="password" placeholder="stored locally in your browser" autocomplete="off">
+  </label>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="file" class="active">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      File
+    </button>
+    <button role="tab" data-tab="paste">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+      Paste
+    </button>
+    <button role="tab" data-tab="url">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      URL
+    </button>
+  </nav>
+
+  <!-- FILE -->
+  <section id="tab-file" class="tab active">
+    <form id="form-file" enctype="multipart/form-data">
+      <label class="dropzone" id="dropzone">
+        <input type="file" name="file" id="file-input" required hidden>
+        <svg class="dropzone-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p class="dropzone-title">Drop file here or click to browse</p>
+        <p class="dropzone-info muted small" id="file-info">Max {{.MaxSize}} bytes</p>
+      </label>
+
+      <details class="options">
+        <summary>Options</summary>
+        <div class="options-grid">
+          <label class="field"><span>Expires in</span>
+            <select name="expires_in">
+              <option value="1h">1 hour</option>
+              <option value="24h" selected>24 hours</option>
+              <option value="7d">7 days</option>
+              <option value="30d">30 days</option>
+              <option value="0">never</option>
+            </select>
+          </label>
+          <label class="field"><span>Password</span>
+            <input type="password" name="password" autocomplete="new-password" placeholder="optional">
+          </label>
+          <label class="field"><span>Custom path</span>
+            <input type="text" name="custom_id" pattern="[A-Za-z0-9_\-]{2,64}" placeholder="random if empty" autocomplete="off">
+          </label>
+          <label class="check"><input type="checkbox" name="one_time" value="1"> one-time download</label>
+        </div>
+      </details>
+
+      <button type="submit" class="primary">Upload</button>
+    </form>
+  </section>
+
+  <!-- PASTE -->
+  <section id="tab-paste" class="tab">
+    <form id="form-paste">
+      <label class="field"><span>Content</span>
+        <textarea name="content" rows="12" required placeholder="paste your text or code here…"></textarea>
+      </label>
+
+      <details class="options">
+        <summary>Options</summary>
+        <div class="options-grid">
+          <label class="field"><span>Expires in</span>
+            <select name="expires_in">
+              <option value="1h">1 hour</option>
+              <option value="24h" selected>24 hours</option>
+              <option value="7d">7 days</option>
+              <option value="30d">30 days</option>
+              <option value="0">never</option>
+            </select>
+          </label>
+          <label class="field"><span>Password</span>
+            <input type="password" name="password" autocomplete="new-password" placeholder="optional">
+          </label>
+          <label class="field"><span>Custom path</span>
+            <input type="text" name="custom_id" pattern="[A-Za-z0-9_\-]{2,64}" placeholder="random if empty" autocomplete="off">
+          </label>
+          <label class="check"><input type="checkbox" name="one_time" value="1"> one-time view</label>
+        </div>
+      </details>
+
+      <button type="submit" class="primary">Create paste</button>
+    </form>
+  </section>
+
+  <!-- URL -->
+  <section id="tab-url" class="tab">
+    <form id="form-url">
+      <label class="field"><span>Target URL</span>
+        <input type="url" name="url" placeholder="https://example.com/…" required>
+      </label>
+
+      <details class="options">
+        <summary>Options</summary>
+        <div class="options-grid">
+          <label class="field"><span>Expires in</span>
+            <select name="expires_in">
+              <option value="24h">24 hours</option>
+              <option value="7d">7 days</option>
+              <option value="30d" selected>30 days</option>
+              <option value="0">never</option>
+            </select>
+          </label>
+          <label class="field"><span>Custom path</span>
+            <input type="text" name="custom_id" pattern="[A-Za-z0-9_\-]{2,64}" placeholder="random if empty" autocomplete="off">
+          </label>
+        </div>
+      </details>
+
+      <button type="submit" class="primary">Shorten</button>
+    </form>
+  </section>
+
+  <!-- RESULT -->
+  <output id="result" class="result" hidden>
+    <div class="result-main">
+      <img id="qr" class="qr" alt="QR code" width="128" height="128">
+      <div class="result-info">
+        <div class="url-row">
+          <input id="url-input" readonly>
+          <button type="button" id="copy-btn" class="icon-btn" title="Copy">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <p id="raw-line" class="muted small" hidden>
+          Raw: <a id="raw-link" href="#"></a>
+        </p>
+      </div>
+    </div>
+  </output>
+
+  <!-- ERROR -->
+  <div id="error" class="error-box" hidden></div>
+
+  <footer class="page-foot">
+    <a href="/admin">Admin →</a>
+  </footer>
+</main>
+
+<script>
+const tokenInput = document.getElementById('token');
+tokenInput.value = localStorage.getItem('selftmp_token') || '';
+tokenInput.addEventListener('change', () => {
+  localStorage.setItem('selftmp_token', tokenInput.value.trim());
+});
+
+// tab switching
+document.querySelectorAll('.tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    hideResult();
+  });
+});
+
+// drag & drop
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('file-input');
+const fileInfo = document.getElementById('file-info');
+
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length) showFileInfo(fileInput.files[0]);
+});
+['dragenter', 'dragover'].forEach(ev => dropzone.addEventListener(ev, e => {
+  e.preventDefault();
+  dropzone.classList.add('dragover');
+}));
+['dragleave', 'drop'].forEach(ev => dropzone.addEventListener(ev, e => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+}));
+dropzone.addEventListener('drop', e => {
+  if (!e.dataTransfer.files.length) return;
+  fileInput.files = e.dataTransfer.files;
+  showFileInfo(e.dataTransfer.files[0]);
+});
+function showFileInfo(f) {
+  fileInfo.textContent = `${f.name} · ${formatBytes(f.size)}`;
+}
+function formatBytes(n) {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n/1024).toFixed(1)} KB`;
+  if (n < 1024 * 1024 * 1024) return `${(n/1024/1024).toFixed(1)} MB`;
+  return `${(n/1024/1024/1024).toFixed(2)} GB`;
+}
+
+// result display
+const resultBox = document.getElementById('result');
+const errorBox = document.getElementById('error');
+const urlInput = document.getElementById('url-input');
+const rawLine = document.getElementById('raw-line');
+const rawLink = document.getElementById('raw-link');
+const qr = document.getElementById('qr');
+const copyBtn = document.getElementById('copy-btn');
+
+function hideResult() {
+  resultBox.hidden = true;
+  errorBox.hidden = true;
+}
+
+function showResult(data) {
+  errorBox.hidden = true;
+  urlInput.value = data.url;
+  qr.src = '/qr/' + data.id;
+  if (data.raw_url) {
+    rawLink.href = data.raw_url;
+    rawLink.textContent = data.raw_url;
+    rawLine.hidden = false;
+  } else {
+    rawLine.hidden = true;
+  }
+  resultBox.hidden = false;
+  resultBox.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+}
+
+function showError(msg) {
+  resultBox.hidden = true;
+  errorBox.textContent = msg;
+  errorBox.hidden = false;
+}
+
+copyBtn.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(urlInput.value);
+    copyBtn.classList.add('ok');
+    setTimeout(() => copyBtn.classList.remove('ok'), 1200);
+  } catch {
+    urlInput.select();
+    document.execCommand('copy');
+  }
+});
+
+// form submission
+async function submit(endpoint, form, isMultipart) {
+  hideResult();
+  const token = tokenInput.value.trim();
+  const headers = {'Accept': 'application/json'};
+  if (token) headers['X-Admin-Token'] = token;
+  let body;
+  if (isMultipart) {
+    body = new FormData(form);
+  } else {
+    body = new URLSearchParams(new FormData(form));
+    headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  }
+  const btn = form.querySelector('button[type=submit]');
+  btn.disabled = true;
+  btn.dataset.label = btn.textContent;
+  btn.textContent = 'Submitting…';
+  try {
+    const res = await fetch(endpoint, {method: 'POST', headers, body});
+    const data = await res.json().catch(() => ({error: 'invalid response'}));
+    if (!res.ok) { showError(data.error || res.statusText); return; }
+    showResult(data);
+  } catch (e) {
+    showError('Request failed: ' + e);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = btn.dataset.label;
+  }
+}
+
+document.getElementById('form-file').addEventListener('submit', e => {
+  e.preventDefault();
+  submit('/api/upload', e.target, true);
+});
+document.getElementById('form-paste').addEventListener('submit', e => {
+  e.preventDefault();
+  submit('/api/paste', e.target, false);
+});
+document.getElementById('form-url').addEventListener('submit', e => {
+  e.preventDefault();
+  submit('/api/shorten', e.target, false);
+});
+</script>
+</body>
+</html>

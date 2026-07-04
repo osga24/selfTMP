@@ -1,0 +1,39 @@
+# --- secrets & runtime data ---
+.env
+.env.local
+.env.*.local
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# --- Go build artifacts ---
+/selftmp
+/selfTMP
+/bin/
+/out/
+/dist/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+coverage.out
+coverage.html
+vendor/
+
+# --- IDE / editor ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.claude/
+.agents/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
