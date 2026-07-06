@@ -19,7 +19,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/skip2/go-qrcode"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -600,24 +599,6 @@ func (s *Server) handleAPIDelete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
-}
-
-// --- QR code -------------------------------------------------------------
-
-func (s *Server) handleQR(w http.ResponseWriter, r *http.Request) {
-	id := r.PathValue("id")
-	if _, err := s.loadLiveEntry(id); err != nil {
-		http.NotFound(w, r)
-		return
-	}
-	png, err := qrcode.Encode(s.baseURL(r)+"/"+id, qrcode.Medium, 256)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	w.Header().Set("Content-Type", "image/png")
-	w.Header().Set("Cache-Control", "public, max-age=3600")
-	_, _ = w.Write(png)
 }
 
 func truthy(s string) bool {

@@ -44,7 +44,6 @@ func Run(tplFS, staticFS fs.FS) {
 	mux.HandleFunc("GET /admin", srv.handleAdmin)
 	mux.HandleFunc("GET /api/entries", srv.handleAPIList)
 	mux.HandleFunc("DELETE /api/entries/{id}", srv.handleAPIDelete)
-	mux.HandleFunc("GET /qr/{id}", srv.handleQR)
 	mux.HandleFunc("GET /raw/{id}", srv.handleRaw)
 	mux.HandleFunc("POST /{id}/unlock", srv.handleUnlock)
 	mux.HandleFunc("GET /{id}", srv.handleView)

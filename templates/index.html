@@ -133,7 +133,6 @@
   <!-- RESULT -->
   <output id="result" class="result" hidden>
     <div class="result-main">
-      <img id="qr" class="qr" alt="QR code" width="128" height="128">
       <div class="result-info">
         <div class="url-row">
           <input id="url-input" readonly>
@@ -211,7 +210,6 @@ const errorBox = document.getElementById('error');
 const urlInput = document.getElementById('url-input');
 const rawLine = document.getElementById('raw-line');
 const rawLink = document.getElementById('raw-link');
-const qr = document.getElementById('qr');
 const copyBtn = document.getElementById('copy-btn');
 
 function hideResult() {
@@ -222,7 +220,6 @@ function hideResult() {
 function showResult(data) {
   errorBox.hidden = true;
   urlInput.value = data.url;
-  qr.src = '/qr/' + data.id;
   if (data.raw_url) {
     rawLink.href = data.raw_url;
     rawLink.textContent = data.raw_url;
