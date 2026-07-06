@@ -186,4 +186,4 @@ Because templates and static files are compiled into the binary via `//go:embed`
 
 ## License
 
-MIT
+BSD 3-Clause
